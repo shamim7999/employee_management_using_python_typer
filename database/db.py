@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 import sqlite3
 import models.employee as employee
 
@@ -30,7 +31,7 @@ def get_employee(employee_id):
     conn = sqlite3.connect('person.db')
     cursor = conn.cursor()
 
-    cursor.execute('SELECT id FROM employee WHERE id = ?', (employee_id,))
+    cursor.execute('SELECT * FROM employee WHERE id = ?', (employee_id,))
 
     row = cursor.fetchone()
     conn.close()
@@ -67,6 +68,20 @@ def add_employee(e_id, name, age, address, role, project, salary, casual_leave, 
                     new_employee.sick_leave, new_employee.joining_date, new_employee.phone))
 
     print(f'Added person: {new_employee}')
+
+    conn.commit()
+    conn.close()
+
+
+def delete_employee_by_id(e_id):
+    if get_employee(e_id) is None:
+        print(not_found(e_id))
+        return -1
+
+    conn = sqlite3.connect('person.db')
+    cursor = conn.cursor()
+
+    cursor.execute("DELETE FROM employee WHERE id = ?", (e_id,))
 
     conn.commit()
     conn.close()
@@ -110,6 +125,69 @@ def get_employee_by_id(e_id):
         return None
 
 
+def time_diff_test(e_id):
+    if get_employee(e_id) is None:
+        print(not_found(e_id))
+        return
+    conn = sqlite3.connect('person.db')
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT joining_date FROM employee WHERE id = ?", (e_id,))
+    result = cursor.fetchone()
+
+    joining_date_str = result[0]
+    joining_date = datetime.strptime(joining_date_str, '%Y-%m-%d')
+
+    # Get the current date
+    current_date = datetime.now()
+
+    cursor.execute("SELECT timediff(datetime(?) , datetime(?, 'localtime')) as local_date",
+                   (current_date, joining_date))
+
+    row = cursor.fetchone()
+    conn.close()
+
+    if row:
+        return employee.Employee(*row)
+    else:
+        return None
+
+
+def total_working_year(e_id):
+    if get_employee(e_id) is None:
+        print(not_found(e_id))
+        return
+    conn = sqlite3.connect('person.db')
+    cursor = conn.cursor()
+
+    cursor.execute("""
+            SELECT joining_date,
+                   (julianday(joining_date) - julianday('now')) AS total_days
+            FROM employee
+            WHERE id = ?
+        """, (e_id,))
+    result = cursor.fetchone()
+
+    if result is None:
+        conn.close()
+        return None
+
+    joining_date_str, total_days = result
+    total_days = int(total_days)
+
+    # Calculate years, months, and days from total days
+    years = total_days // 365
+    remaining_days = total_days % 365
+    months = remaining_days // 30
+    days = remaining_days % 30
+
+    # Close the database connection
+    conn.close()
+
+    # Return the result in the format yyyy:mm:dd
+    return f" {years}Y:{months:02}M:{days:02}D"
+
+
 def show_employees():
     conn = sqlite3.connect('person.db')
     cursor = conn.cursor()
@@ -120,7 +198,74 @@ def show_employees():
 
 
 def increment_salary(e_id, percentage: float):
+    if get_employee(e_id) is None:
+        print(not_found(e_id))
+        return
     the_employee = get_employee_by_id(e_id)
     the_employee.salary = the_employee.salary + (the_employee.salary * percentage / 100.0)
     update_employee(the_employee)
-    print(f'The Employee is: {the_employee}')
+    msg(the_employee)
+
+
+def change_project(e_id, project):
+    if get_employee(e_id) is None:
+        print(not_found(e_id))
+        return -1
+    the_employee = get_employee_by_id(e_id)
+    the_employee.project = project
+    update_employee(the_employee)
+    msg(the_employee)
+
+
+def change_phone(e_id, phone):
+    if get_employee(e_id) is None:
+        print(not_found(e_id))
+        return -1
+    the_employee = get_employee_by_id(e_id)
+    the_employee.phone = phone
+    update_employee(the_employee)
+    msg(the_employee)
+
+
+def change_casual_leave(e_id, leave):
+    if get_employee(e_id) is None:
+        print(not_found(e_id))
+        return -1
+    the_employee = get_employee_by_id(e_id)
+    the_employee.casual_leave = leave
+    update_employee(the_employee)
+    msg(the_employee)
+
+
+def change_sick_leave(e_id, leave):
+    if get_employee(e_id) is None:
+        print(not_found(e_id))
+        return -1
+    the_employee = get_employee_by_id(e_id)
+    the_employee.sick_leave = leave
+    update_employee(the_employee)
+    msg(the_employee)
+
+
+def change_role(e_id, role):
+    if get_employee(e_id) is None:
+        print(not_found(e_id))
+        return -1
+    the_employee = get_employee_by_id(e_id)
+    the_employee.role = role
+    update_employee(the_employee)
+    msg(the_employee)
+
+
+def change_address(e_id, address):
+    if get_employee(e_id) is None:
+        print(not_found(e_id))
+        return -1
+    the_employee = get_employee_by_id(e_id)
+    the_employee.address = address
+    update_employee(the_employee)
+    msg(the_employee)
+
+
+def msg(the_employee):
+    print(f'Info of The updated Employee is: {the_employee}')
