@@ -156,13 +156,13 @@ def time_diff_test(e_id):
 def total_working_year(e_id):
     if get_employee(e_id) is None:
         print(not_found(e_id))
-        return
+        return -1
     conn = sqlite3.connect('person.db')
     cursor = conn.cursor()
 
     cursor.execute("""
             SELECT joining_date,
-                   (julianday(joining_date) - julianday('now')) AS total_days
+                   (julianday('now') - julianday(joining_date)) AS total_days
             FROM employee
             WHERE id = ?
         """, (e_id,))
@@ -183,7 +183,8 @@ def total_working_year(e_id):
 
     # Close the database connection
     conn.close()
-
+    if years < 0:
+        years = 0
     # Return the result in the format yyyy:mm:dd
     return f" {years}Y:{months:02}M:{days:02}D"
 
