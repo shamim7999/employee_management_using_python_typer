@@ -12,16 +12,14 @@ def setup_database():
     mydb.setup_database()
 
 
-def add_employee(e_id, name, age, address, role, project, salary, casual_leave, sick_leave, joining_date, phone):
-    new_employee = employee.Employee(e_id, name, age, address, role, project, salary, casual_leave, sick_leave,
-                                     joining_date, phone)
-    mydb.save_employee(new_employee)
+def add_employee(new_employee):
+    mydb.add_employee(new_employee)
 
 
 def add_employees(employees):
     for emp in employees:
         new_employee = employee.Employee(*emp)
-        mydb.save_employee(new_employee)
+        mydb.add_employee(new_employee)
 
 
 def show_employees():

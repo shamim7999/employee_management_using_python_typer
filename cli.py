@@ -2,6 +2,7 @@ from typing import Optional
 
 import typer
 import services.employee_service as em_serv
+import models.employee as employee
 
 app = typer.Typer()
 
@@ -9,8 +10,9 @@ app = typer.Typer()
 @app.command()
 def add_employee(e_id: int, name: str, age: int, address: str, role: str, project: str,
                  salary: int, casual_leave: int, sick_leave: int, joining_date: str, phone: str):
-    em_serv.add_employee(e_id, name, age, address, role, project, salary, casual_leave, sick_leave,
-                         joining_date, phone)
+    new_employee = employee.Employee(e_id, name, age, address, role, project, salary, casual_leave, sick_leave,
+                                     joining_date, phone)
+    em_serv.add_employee(new_employee)
 
 
 @app.command()

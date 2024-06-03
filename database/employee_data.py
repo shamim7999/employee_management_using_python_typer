@@ -11,4 +11,6 @@ employees = [
     (10, "Nadia", 26, "Narayanganj", "Product_Manager", "Retail_Solution", 35000, 12, 10, "2023-02-28", "01455667788"),
     (11, "Shamim", 25, "Dhaka", "Junior_SWE", "Odoo", 20000, 10, 12, "2024-12-03", "01535707889"),
     (12, "Shamim", 25, "Chittagong", "Junior_SWE", "Odoo", 20000, 10, 12, "2024-12-03", "01535707889"),
+    (13, "Shamim", 25, "Chittagong", "Junior_SWE", "Odoo", 20000, 10, 12, "2024-12-03", "01535707889"),
+    (14, "Shamim", 25, "Chittagong", "Junior_SWE", "Odoo", 20000, 10, 12, "2024-12-03", "01535707889"),
 ]

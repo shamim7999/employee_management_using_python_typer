@@ -27,22 +27,6 @@ def setup_database():
     conn.close()
 
 
-def get_employee_by_id(employee_id):
-    conn = sqlite3.connect('person.db')
-    cursor = conn.cursor()
-
-    cursor.execute('SELECT * FROM employee WHERE id = ?', (employee_id,))
-
-    row = cursor.fetchone()
-    conn.close()
-
-    if row:
-        return employee.Employee(*row)
-
-    else:
-        return None
-
-
 def not_found(employee_id):
     return f"Not found Employee with ID: {employee_id}"
 
@@ -51,22 +35,19 @@ def found(employee_id):
     return f"Employee with ID: {employee_id} is already in database."
 
 
-def add_employee(e_id, name, age, address, role, project, salary, casual_leave, sick_leave, joining_date, phone):
-    if get_employee_by_id(e_id) is not None:
-        print(found(e_id))
+def add_employee(new_employee):
+    if get_employee_by_id(new_employee.id) is not None:
+        print(found(new_employee.id))
         return
 
     conn = sqlite3.connect('person.db')
     cursor = conn.cursor()
 
-    new_employee = employee.Employee(e_id, name, age, address, role, project, salary, casual_leave, sick_leave,
-                                     joining_date, phone)
+    employee_data = [getattr(new_employee, attr) for attr in new_employee.__dict__.keys()]
 
     cursor.execute('INSERT INTO employee (id, name, age, address, role, project, salary, casual_leave, '
                    'sick_leave, joining_date, phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-                   (new_employee.id, new_employee.name, new_employee.age, new_employee.address,
-                    new_employee.role, new_employee.project, new_employee.salary, new_employee.casual_leave,
-                    new_employee.sick_leave, new_employee.joining_date, new_employee.phone))
+                   employee_data)
 
     print(f'Added person: {new_employee}')
 
@@ -104,12 +85,6 @@ def update_employee(new_employee):
 
     conn.commit()
     conn.close()
-
-
-def save_employee(new_employee: employee):
-    add_employee(new_employee.id, new_employee.name, new_employee.age, new_employee.address,
-                 new_employee.role, new_employee.project, new_employee.salary, new_employee.casual_leave,
-                 new_employee.sick_leave, new_employee.joining_date, new_employee.phone)
 
 
 def get_employee_by_id(e_id):
