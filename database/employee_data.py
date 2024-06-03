@@ -8,5 +8,7 @@ employees = [
     (7, "Ali", 29, "Rangpur", "QA_Engineer", "Healthcare_System", 26000, 7, 10, "2022-08-18", "01699887766"),
     (8, "Sumi", 31, "Mymensingh", "Data_Analyst", "Financial_Services", 29000, 11, 8, "2021-12-30", "01877665544"),
     (9, "Hasan", 33, "Comilla", "IT_Support", "E-learning_Platform", 23000, 10, 9, "2020-06-15", "01966554433"),
-    (10, "Nadia", 26, "Narayanganj", "Product_Manager", "Retail_Solution", 35000, 12, 10, "2023-02-28", "01455667788")
+    (10, "Nadia", 26, "Narayanganj", "Product_Manager", "Retail_Solution", 35000, 12, 10, "2023-02-28", "01455667788"),
+    (11, "Shamim", 25, "Dhaka", "Junior_SWE", "Odoo", 20000, 10, 12, "2024-12-03", "01535707889"),
+    (12, "Shamim", 25, "Chittagong", "Junior_SWE", "Odoo", 20000, 10, 12, "2024-12-03", "01535707889"),
 ]

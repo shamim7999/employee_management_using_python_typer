@@ -1,5 +1,11 @@
+from typing import Optional
+
 import database.db as mydb
 import models.employee as employee
+from rich.console import Console
+from rich.table import Table
+
+console = Console()
 
 
 def setup_database():
@@ -23,7 +29,24 @@ def show_employees():
     if len(res) == 0:
         print('No Data Found.')
         return
-    print(*res, sep='\n')
+    table = Table("ID", "Name", "Age", "Address", "Role", "Project", "Salary", "Casual Leave",
+                  "Sick Leave", "Joining Date", "Phone")
+    for emp in res:
+        table.add_row(
+            str(emp.id),
+            emp.name,
+            str(emp.age),
+            emp.address,
+            emp.role,
+            emp.project,
+            str(emp.salary),
+            str(emp.casual_leave),
+            str(emp.sick_leave),
+            emp.joining_date,
+            emp.phone
+        )
+    console.print(table)
+    #print(*res, sep='\n')
 
 
 def increment_salary(e_id, percentage: float):
@@ -89,3 +112,63 @@ def get_employee_by_id(e_id):
         print(mydb.not_found(e_id))
         return
     print(res)
+
+
+def filter_employee(e_id: Optional[int], name: Optional[str], age: Optional[int], address: Optional[str],
+                    role: Optional[str], project: Optional[str], salary: Optional[int], casual_leave: Optional[int],
+                    sick_leave: Optional[int], joining_date: Optional[str], phone: Optional[str]):
+    query = "SELECT * FROM employee WHERE 1=1"
+    params = []
+
+    if e_id is not None:
+        query += " AND id = ?"
+        params.append(e_id)
+    if name is not None:
+        query += " AND name = ?"
+        params.append(name)
+    if age is not None:
+        query += " AND age = ?"
+        params.append(age)
+    if address is not None:
+        query += " AND address = ?"
+        params.append(address)
+    if role is not None:
+        query += " AND role = ?"
+        params.append(role)
+    if project is not None:
+        query += " AND project = ?"
+        params.append(project)
+    if salary is not None:
+        query += " AND salary = ?"
+        params.append(salary)
+    if casual_leave is not None:
+        query += " AND casual_leave = ?"
+        params.append(casual_leave)
+    if sick_leave is not None:
+        query += " AND sick_leave = ?"
+        params.append(sick_leave)
+    if joining_date is not None:
+        query += " AND joining_date = ?"
+        params.append(joining_date)
+    if phone is not None:
+        query += " AND phone = ?"
+        params.append(phone)
+
+    res = mydb.filter_employees(query, params)
+    table = Table("ID", "Name", "Age", "Address", "Role", "Project", "Salary", "Casual Leave",
+                  "Sick Leave", "Joining Date", "Phone")
+    for emp in res:
+        table.add_row(
+            str(emp.id),
+            emp.name,
+            str(emp.age),
+            emp.address,
+            emp.role,
+            emp.project,
+            str(emp.salary),
+            str(emp.casual_leave),
+            str(emp.sick_leave),
+            emp.joining_date,
+            emp.phone
+        )
+    console.print(table)

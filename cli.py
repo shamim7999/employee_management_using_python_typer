@@ -1,3 +1,5 @@
+from typing import Optional
+
 import typer
 import services.employee_service as em_serv
 
@@ -70,6 +72,15 @@ def change_phone(e_id: int, phone: str):
 @app.command()
 def total_working_year(e_id: int):
     em_serv.total_working_year(e_id)
+
+
+@app.command()
+def filter_employee(e_id: Optional[int] = None, name: Optional[str] = None, age: Optional[int] = None,
+                    address: Optional[str] = None, role: Optional[str] = None, project: Optional[str] = None,
+                    salary: Optional[int] = None, casual_leave: Optional[int] = None, sick_leave: Optional[int] = None,
+                    joining_date: Optional[str] = None, phone: Optional[str] = None):
+    em_serv.filter_employee(e_id, name, age, address, role, project, salary, casual_leave, sick_leave, joining_date,
+                            phone)
 
 
 em_serv.setup_database()

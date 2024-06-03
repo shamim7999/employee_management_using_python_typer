@@ -269,5 +269,17 @@ def change_address(e_id, address):
     msg(the_employee)
 
 
+def filter_employees(query, params):
+    conn = sqlite3.connect('person.db')
+    cursor = conn.cursor()
+
+    cursor.execute(query, params)
+    rows = cursor.fetchall()
+
+    conn.close()
+
+    return [employee.Employee(*row) for row in rows]
+
+
 def msg(the_employee):
     print(f'Info of The updated Employee is: {the_employee}')
