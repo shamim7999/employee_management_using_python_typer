@@ -81,3 +81,11 @@ def change_phone(e_id, phone):
     if mydb.change_phone(e_id, phone) == -1:
         return
     print(f'Phone Number Changed for ID: {e_id}')
+
+
+def get_employee_by_id(e_id):
+    res = mydb.get_employee_by_id(e_id)
+    if res is None:
+        print(mydb.not_found(e_id))
+        return
+    print(res)

@@ -12,6 +12,11 @@ def add_employee(e_id: int, name: str, age: int, address: str, role: str, projec
 
 
 @app.command()
+def get_employee_by_id(e_id: int):
+    em_serv.get_employee_by_id(e_id)
+
+
+@app.command()
 def delete_employee(e_id: int):
     em_serv.delete_employee_by_id(e_id)
 

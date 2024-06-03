@@ -27,7 +27,7 @@ def setup_database():
     conn.close()
 
 
-def get_employee(employee_id):
+def get_employee_by_id(employee_id):
     conn = sqlite3.connect('person.db')
     cursor = conn.cursor()
 
@@ -38,6 +38,7 @@ def get_employee(employee_id):
 
     if row:
         return employee.Employee(*row)
+
     else:
         return None
 
@@ -51,7 +52,7 @@ def found(employee_id):
 
 
 def add_employee(e_id, name, age, address, role, project, salary, casual_leave, sick_leave, joining_date, phone):
-    if get_employee(e_id) is not None:
+    if get_employee_by_id(e_id) is not None:
         print(found(e_id))
         return
 
@@ -74,7 +75,7 @@ def add_employee(e_id, name, age, address, role, project, salary, casual_leave, 
 
 
 def delete_employee_by_id(e_id):
-    if get_employee(e_id) is None:
+    if get_employee_by_id(e_id) is None:
         print(not_found(e_id))
         return -1
 
@@ -126,7 +127,7 @@ def get_employee_by_id(e_id):
 
 
 def time_diff_test(e_id):
-    if get_employee(e_id) is None:
+    if get_employee_by_id(e_id) is None:
         print(not_found(e_id))
         return
     conn = sqlite3.connect('person.db')
@@ -154,7 +155,7 @@ def time_diff_test(e_id):
 
 
 def total_working_year(e_id):
-    if get_employee(e_id) is None:
+    if get_employee_by_id(e_id) is None:
         print(not_found(e_id))
         return -1
     conn = sqlite3.connect('person.db')
@@ -199,7 +200,7 @@ def show_employees():
 
 
 def increment_salary(e_id, percentage: float):
-    if get_employee(e_id) is None:
+    if get_employee_by_id(e_id) is None:
         print(not_found(e_id))
         return
     the_employee = get_employee_by_id(e_id)
@@ -209,7 +210,7 @@ def increment_salary(e_id, percentage: float):
 
 
 def change_project(e_id, project):
-    if get_employee(e_id) is None:
+    if get_employee_by_id(e_id) is None:
         print(not_found(e_id))
         return -1
     the_employee = get_employee_by_id(e_id)
@@ -219,7 +220,7 @@ def change_project(e_id, project):
 
 
 def change_phone(e_id, phone):
-    if get_employee(e_id) is None:
+    if get_employee_by_id(e_id) is None:
         print(not_found(e_id))
         return -1
     the_employee = get_employee_by_id(e_id)
@@ -229,7 +230,7 @@ def change_phone(e_id, phone):
 
 
 def change_casual_leave(e_id, leave):
-    if get_employee(e_id) is None:
+    if get_employee_by_id(e_id) is None:
         print(not_found(e_id))
         return -1
     the_employee = get_employee_by_id(e_id)
@@ -239,7 +240,7 @@ def change_casual_leave(e_id, leave):
 
 
 def change_sick_leave(e_id, leave):
-    if get_employee(e_id) is None:
+    if get_employee_by_id(e_id) is None:
         print(not_found(e_id))
         return -1
     the_employee = get_employee_by_id(e_id)
@@ -249,7 +250,7 @@ def change_sick_leave(e_id, leave):
 
 
 def change_role(e_id, role):
-    if get_employee(e_id) is None:
+    if get_employee_by_id(e_id) is None:
         print(not_found(e_id))
         return -1
     the_employee = get_employee_by_id(e_id)
@@ -259,7 +260,7 @@ def change_role(e_id, role):
 
 
 def change_address(e_id, address):
-    if get_employee(e_id) is None:
+    if get_employee_by_id(e_id) is None:
         print(not_found(e_id))
         return -1
     the_employee = get_employee_by_id(e_id)
