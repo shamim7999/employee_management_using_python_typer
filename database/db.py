@@ -1,6 +1,8 @@
-from datetime import datetime
 import sqlite3
-import models.employee as employee
+
+from models import employee as employee
+from database.connection import DatabaseConnection
+from datetime import datetime
 
 
 def setup_database():
