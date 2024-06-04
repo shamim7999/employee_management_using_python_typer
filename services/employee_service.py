@@ -17,8 +17,8 @@ def add_employee(new_employee):
 
 
 def add_employees(employees):
-    for emp in employees:
-        new_employee = employee.Employee(*emp)
+    for the_employee in employees:
+        new_employee = employee.Employee(*the_employee)
         mydb.add_employee(new_employee)
 
 
@@ -29,22 +29,21 @@ def show_employees():
         return
     table = Table("ID", "Name", "Age", "Address", "Role", "Project", "Salary", "Casual Leave",
                   "Sick Leave", "Joining Date", "Phone")
-    for emp in res:
+    for the_employee in res:
         table.add_row(
-            str(emp.id),
-            emp.name,
-            str(emp.age),
-            emp.address,
-            emp.role,
-            emp.project,
-            str(emp.salary),
-            str(emp.casual_leave),
-            str(emp.sick_leave),
-            emp.joining_date,
-            emp.phone
+            str(the_employee.id),
+            the_employee.name,
+            str(the_employee.age),
+            the_employee.address,
+            the_employee.role,
+            the_employee.project,
+            str(the_employee.salary),
+            str(the_employee.casual_leave),
+            str(the_employee.sick_leave),
+            the_employee.joining_date,
+            the_employee.phone
         )
     console.print(table)
-    #print(*res, sep='\n')
 
 
 def increment_salary(e_id, percentage: float):
@@ -118,55 +117,40 @@ def filter_employee(e_id: Optional[int], name: Optional[str], age: Optional[int]
     query = "SELECT * FROM employee WHERE 1=1"
     params = []
 
-    if e_id is not None:
-        query += " AND id = ?"
-        params.append(e_id)
-    if name is not None:
-        query += " AND name = ?"
-        params.append(name)
-    if age is not None:
-        query += " AND age = ?"
-        params.append(age)
-    if address is not None:
-        query += " AND address = ?"
-        params.append(address)
-    if role is not None:
-        query += " AND role = ?"
-        params.append(role)
-    if project is not None:
-        query += " AND project = ?"
-        params.append(project)
-    if salary is not None:
-        query += " AND salary = ?"
-        params.append(salary)
-    if casual_leave is not None:
-        query += " AND casual_leave = ?"
-        params.append(casual_leave)
-    if sick_leave is not None:
-        query += " AND sick_leave = ?"
-        params.append(sick_leave)
-    if joining_date is not None:
-        query += " AND joining_date = ?"
-        params.append(joining_date)
-    if phone is not None:
-        query += " AND phone = ?"
-        params.append(phone)
+    conditions = {
+        "id": e_id,
+        "name": name,
+        "age": age,
+        "address": address,
+        "role": role,
+        "project": project,
+        "salary": salary,
+        "casual_leave": casual_leave,
+        "sick_leave": sick_leave,
+        "joining_date": joining_date,
+        "phone": phone
+    }
+
+    for key, value in conditions.items():
+        if value is not None:
+            params.append(value)
+            query += f' AND {key}=?'
 
     res = mydb.filter_employees(query, params)
     table = Table("ID", "Name", "Age", "Address", "Role", "Project", "Salary", "Casual Leave",
                   "Sick Leave", "Joining Date", "Phone")
-    for emp in res:
+    for the_employee in res:
         table.add_row(
-            str(emp.id),
-            emp.name,
-            str(emp.age),
-            emp.address,
-            emp.role,
-            emp.project,
-            str(emp.salary),
-            str(emp.casual_leave),
-            str(emp.sick_leave),
-            emp.joining_date,
-            emp.phone
+            str(the_employee.id),
+            the_employee.name,
+            str(the_employee.age),
+            the_employee.address,
+            the_employee.role,
+            the_employee.project,
+            str(the_employee.salary),
+            str(the_employee.casual_leave),
+            str(the_employee.sick_leave),
+            the_employee.joining_date,
+            the_employee.phone
         )
     console.print(table)

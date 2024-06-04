@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 import sqlite3
 import models.employee as employee
 
@@ -73,15 +73,16 @@ def update_employee(new_employee):
     conn = sqlite3.connect('person.db')
     cursor = conn.cursor()
 
+    employee_data = [getattr(new_employee, attr) for attr in new_employee.__dict__.keys()]
+    employee_id = employee_data.pop(0)
+    employee_data.append(employee_id)
+
     cursor.execute('''
         UPDATE employee
         SET name = ?, age = ?, address = ?, role = ?, project = ?, salary = ?, casual_leave = ?, 
             sick_leave = ?, joining_date = ?, phone = ?
         WHERE id = ?
-    ''', (new_employee.name, new_employee.age, new_employee.address, new_employee.role,
-          new_employee.project, new_employee.salary, new_employee.casual_leave,
-          new_employee.sick_leave, new_employee.joining_date, new_employee.phone,
-          new_employee.id))
+    ''', employee_data)
 
     conn.commit()
     conn.close()
